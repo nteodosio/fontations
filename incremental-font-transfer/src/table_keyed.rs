@@ -115,7 +115,12 @@ fn apply_table_patch(
         _ => shared_brotli_decode(stream, None, table_patch.max_uncompressed_length() as usize),
     };
 
-    r.map_err(|e| PatchingError::from_patch_decode_error(e, "table_keyed_TODO"))
+    r.map_err(|e| {
+        PatchingError::from_patch_decode_error(
+            e,
+            &format!("table_keyed patch to {}", table_patch.tag()),
+        )
+    })
 }
 
 pub(crate) fn copy_unprocessed_tables<'a>(
